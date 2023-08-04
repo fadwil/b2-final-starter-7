@@ -17,9 +17,11 @@ class BulkDiscountsController < ApplicationController
     @merchant = find_merchant
     @bulk_discount = @merchant.bulk_discounts.new(bulk_discount_params)
     if @bulk_discount.save
+      flash.notice = "Discount successfully saved!"
       redirect_to merchant_bulk_discounts_path(@merchant)
     else
-      render :new
+      flash.notice = "Field can't be blank"
+      redirect_to new_merchant_bulk_discount_path(@merchant)
     end
   end
 
