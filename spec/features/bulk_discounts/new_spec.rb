@@ -20,6 +20,6 @@ RSpec.describe "bulk discounts index" do
     fill_in "Quantity Threshold:", with: 20
     click_button "Create Bulk Discount"
     expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
-    expect(page).to have_content("15% off of 20 or more items")
+    expect(page).to have_content("15% off 20 or more items")
   end
 end

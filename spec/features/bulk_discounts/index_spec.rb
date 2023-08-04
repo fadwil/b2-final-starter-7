@@ -50,15 +50,15 @@ RSpec.describe "bulk discounts index" do
   # Story 1
   it "I see all of my bulk discounts including their percentage discount and quantity thresholds" do
     within "#bulk-#{@bulk1.id}" do
-      expect(page).to have_content("#{@bulk1.percentage_discount} % off #{@bulk1.quantity_threshold} items or more")
+      expect(page).to have_content("#{@bulk1.percentage_discount}% off #{@bulk1.quantity_threshold} or more items")
     end
 
     within "#bulk-#{@bulk2.id}" do
-      expect(page).to have_content("#{@bulk2.percentage_discount} % off #{@bulk2.quantity_threshold} items or more")
+      expect(page).to have_content("#{@bulk2.percentage_discount}% off #{@bulk2.quantity_threshold} or more items")
     end
 
     within "#bulk-#{@bulk3.id}" do
-      expect(page).to have_content("#{@bulk3.percentage_discount} % off #{@bulk3.quantity_threshold} items or more")
+      expect(page).to have_content("#{@bulk3.percentage_discount}% off #{@bulk3.quantity_threshold} or more items")
     end
 
   end
