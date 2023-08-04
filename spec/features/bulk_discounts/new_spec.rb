@@ -20,6 +20,16 @@ RSpec.describe "bulk discounts index" do
     fill_in "Quantity Threshold:", with: 20
     click_button "Create Bulk Discount"
     expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
+    expect(page).to have_content("Discount successfully saved!")
     expect(page).to have_content("15% off 20 or more items")
+  end
+
+  # Story 2 Sad Path
+  it "When I fill in the form with invalid data an error message is displayed" do
+    fill_in "Percentage Discount:", with: ""
+    fill_in "Quantity Threshold:", with: 20
+    click_button "Create Bulk Discount"
+    expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1))
+    expect(page).to have_content("Field can't be blank")
   end
 end
