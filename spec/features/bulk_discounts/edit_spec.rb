@@ -43,19 +43,24 @@ RSpec.describe "bulk discounts show" do
     @bulk2 = @merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 30 )
     @bulk3 = @merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 40 )
 
-    visit merchant_bulk_discount_path(@merchant1, @bulk1)
+    visit edit_merchant_bulk_discount_path(@merchant1, @bulk1)
   end
 
-    # User Story 4
-    it "I see the bulk discount's quantity threshold and percentage discount" do
-      expect(page).to have_content("Percentage Discount: #{@bulk1.percentage_discount}")
-      expect(page).to have_content("Quantity Threshold: #{@bulk1.quantity_threshold}")
+    # Story 5
+    it "I see a form to edit the discount prepopulated with current attributes" do
+      expect(page).to have_content("Edit Bulk Discount")
+      expect(page).to have_field("Percentage discount", with: 10)
+      expect(page).to have_field("Quantity threshold", with: 20)
+      expect(page).to have_button("Submit")
     end
 
-    # User Story 5
-    it "I see a link to edit the bulk discount, when clicked I am taken to the edit page" do
-      expect(page).to have_link("Edit Discount")
-      click_link "Edit Discount"
-      expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant1, @bulk1))
+    # Story 5
+    it "I change any/all of the information and click submit, I am redirected to the show page and see the updated attributes" do
+      fill_in "Percentage discount", with: 25
+      fill_in "Quantity threshold", with: 50
+      click_button("Submit")
+      expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @bulk1))
+      expect(page).to have_content("Percentage Discount: 25")
+      expect(page).to have_content("Quantity Threshold: 50")
     end
 end
