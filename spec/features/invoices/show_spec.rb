@@ -103,6 +103,7 @@ RSpec.describe "invoices show" do
       expect(page).to_not have_content("in progress")
     end
   end
+
   # Story 6
   it 'shows the total revenue after discounts' do
     visit merchant_invoice_path(@merchant1, @invoice_1)
@@ -110,11 +111,27 @@ RSpec.describe "invoices show" do
     within "#total_revenue" do
       expect(page).to have_content("Total Revenue: #{@invoice_1.total_revenue}")
     end
-save_and_open_page
+
     within "#total_discounted_revenue" do 
       expect(page).to have_content("Total Invoice Discount: #{@invoice_1.total_discount}")
       expect(page).to have_content("Total Revenue Including Discount: #{@invoice_1.total_revenue_discounted}")
     end
+  end
+
+  # Story 7
+  it 'displays a link to the bulk discount show page if it was applied' do
+    visit merchant_invoice_path(@merchant1, @invoice_1)
+
+    within "#the-status-#{@ii_1.id}" do
+      expect(page).to have_link("Bulk Discount Applied")
+      expect(page).to have_content(@item_1.name)
+    end
+    
+    within "#the-status-#{@ii_11.id}" do
+      expect(page).to have_link("Bulk Discount Applied")
+      expect(page).to have_content(@item_8.name)
+    end
+
   end
 end
   

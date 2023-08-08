@@ -35,9 +35,34 @@ RSpec.describe InvoiceItem, type: :model do
       @ii_2 = InvoiceItem.create!(invoice_id: @i1.id, item_id: @item_2.id, quantity: 1, unit_price: 8, status: 0)
       @ii_3 = InvoiceItem.create!(invoice_id: @i2.id, item_id: @item_3.id, quantity: 1, unit_price: 5, status: 2)
       @ii_4 = InvoiceItem.create!(invoice_id: @i3.id, item_id: @item_3.id, quantity: 1, unit_price: 5, status: 1)
+
+      
     end
     it 'incomplete_invoices' do
       expect(InvoiceItem.incomplete_invoices).to eq([@i1, @i3])
+    end
+
+    describe "instance methods" do
+      before do
+        @merchant_1 = Merchant.create!(name: 'Merchant 1')
+        @item_1 = Item.create!(name: 'Shampoo', description: 'This washes your hair', unit_price: 10, merchant_id: @merchant_1.id)
+        @item_2 = Item.create!(name: 'Conditioner', description: 'This makes your hair shiny', unit_price: 8, merchant_id: @merchant_1.id)
+        @item_3 = Item.create!(name: 'Brush', description: 'This takes out tangles', unit_price: 5, merchant_id: @merchant_1.id)
+        @customer_1 = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+        @invoice_1 = Invoice.create!(customer_id: @customer_1.id, status: 2)
+        @invoice_item_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 10, unit_price: 10, status: 0)
+        @invoice_item_2 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_2.id, quantity: 1, unit_price: 8, status: 0)
+        @invoice_item_3 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_3.id, quantity: 5, unit_price: 5, status: 0)
+        @bulk_1 = @merchant_1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 5 )
+        @bulk_2 = @merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10 )
+      end
+      describe "discount_applied" do
+        it "returns invoice items with an applied bulk discount" do
+          expect(@invoice_item_1.discount_applied(@merchant_1)).to eq(@bulk_2.id)
+          expect(@invoice_item_2.discount_applied(@merchant_1)).to eq(nil)
+          expect(@invoice_item_3.discount_applied(@merchant_1)).to eq(@bulk_1.id)
+        end
+      end
     end
   end
 end
