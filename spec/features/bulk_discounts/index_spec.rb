@@ -88,4 +88,12 @@ RSpec.describe "bulk discounts index" do
     end
     expect(page).to_not have_content("#{@bulk1.percentage_discount}% off #{@bulk1.quantity_threshold} or more items")
   end
+
+  # Story 9
+  it "displays the next 3 US holidays with their name and date" do
+    expect(page).to have_content("Next 3 US Holidays:")
+    expect(page).to have_content("Labor Day 2023-09-04")
+    expect(page).to have_content("Columbus Day 2023-10-09")
+    expect(page).to have_content("Veterans Day 2023-11-10")
+  end
 end
