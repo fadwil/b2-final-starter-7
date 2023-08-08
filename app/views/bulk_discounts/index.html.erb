@@ -10,3 +10,8 @@
     <%= button_to "Delete Bulk Discount", merchant_bulk_discount_path(@merchant, bulk_discount), method: :delete %>
   </div>
 <% end %>
+
+<h4>Next 3 US Holidays:</h4>
+<% @holidays.each do |holiday| %>
+  <p><%= holiday.name %> <%= holiday.date %></p>
+<% end %>
