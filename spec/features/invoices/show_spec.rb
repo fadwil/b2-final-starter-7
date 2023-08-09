@@ -111,7 +111,7 @@ RSpec.describe "invoices show" do
     within "#total_revenue" do
       expect(page).to have_content("Total Revenue: #{@invoice_1.total_revenue}")
     end
-
+    
     within "#total_discounted_revenue" do 
       expect(page).to have_content("Total Invoice Discount: #{@invoice_1.total_discount}")
       expect(page).to have_content("Total Revenue Including Discount: #{@invoice_1.total_revenue_discounted}")
@@ -131,7 +131,6 @@ RSpec.describe "invoices show" do
       expect(page).to have_link("Bulk Discount Applied")
       expect(page).to have_content(@item_8.name)
     end
-
   end
 end
   
